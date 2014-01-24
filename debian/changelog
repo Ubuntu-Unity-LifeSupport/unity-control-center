@@ -1,3 +1,15 @@
+unity-control-center (14.04.1-0ubuntu2) trusty; urgency=medium
+
+  * debian/source_unity-control-center.py:
+    - updated with the recent fixes from gnome-control-center
+  * debian/unity-control-center.links: 
+    - drop old symlink that was used to add a system-settings entry to 
+      indicator-session, that's deprecated
+  * po/POTFILES.in: 
+    - updated list of files to translate
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Fri, 24 Jan 2014 16:01:06 +0100
+
 unity-control-center (14.04.1-0ubuntu1) trusty; urgency=medium
 
   * Copy icons for sound, display and power panel from GNOME and Humanity themes
