@@ -39,7 +39,7 @@ g_io_module_load (GIOModule *module)
 #endif
 
   /* register the panel */
-  um_user_panel_register (module);
+  cc_user_panel_register (module);
 }
 
 void
