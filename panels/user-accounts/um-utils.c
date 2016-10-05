@@ -542,7 +542,7 @@ is_valid_username (const gchar *username, gchar **tip)
                 }
                 else {
                         *tip = g_strdup (_("The username must only consist of:\n"
-                                          " \xe2\x9e\xa3 lowercase letters from the English alphabet\n"
+                                          " \xe2\x9e\xa3 letters from the English alphabet\n"
                                           " \xe2\x9e\xa3 digits\n"
                                           " \xe2\x9e\xa3 any of the characters '.', '-' and '_'"));
                 }
