@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+17.10.20170930-0ubuntu1) artful; urgency=medium
+
+  [ ventrical ]
+  * debian/control insert recommend activity-log-manager to pop privacy and
+    security icon in settings panel 
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Sat, 30 Sep 2017 22:48:51 +0000
+
 unity-control-center (15.04.0+17.10.20170814.1-0ubuntu2) artful; urgency=medium
 
   * debian/control: use 'X-Ubuntu-Use-Langpack: yes' since the indicator
