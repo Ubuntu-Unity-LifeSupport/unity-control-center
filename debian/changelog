@@ -1,3 +1,10 @@
+unity-control-center (15.04.0+19.04.20181122-0ubuntu1) disco; urgency=medium
+
+  [ Khurshid Alam ]
+  * Import sharing panel from gnome-control-center (LP: #1741027)
+
+ -- Marco Trevisan (Treviño) <mail@3v1n0.net>  Thu, 22 Nov 2018 00:22:16 +0000
+
 unity-control-center (15.04.0+18.04.20180216-0ubuntu1) bionic; urgency=medium
 
   [ Khurshid Alam ]
