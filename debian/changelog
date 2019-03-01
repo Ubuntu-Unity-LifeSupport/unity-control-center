@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+19.04.20190209-0ubuntu2) disco; urgency=medium
+
+  [ Khurshid Alam ]
+  * Fix image preview in GtkFileChooser (lp: #1802589)
+  * Update logo for disco
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Fri, 01 Mar 2019 17:09:32 +0100
+
 unity-control-center (15.04.0+19.04.20190209-0ubuntu1) disco; urgency=medium
 
   [ Khurshid Alam ]
