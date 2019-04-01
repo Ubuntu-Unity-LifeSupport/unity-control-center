@@ -579,14 +579,38 @@ get_primary_disc_info_start (CcInfoPanel *self)
   g_object_unref (file);
 }
 
+static GList *
+convert_points_to_entries (GList *points)
+{
+  GList *entries = NULL;
+  GList *p;
+
+  for (p = points; p != NULL; p = p->next)
+    {
+      GUnixMountPoint *point = p->data;
+      GUnixMountEntry *mount;
+      const gchar *mount_path = g_unix_mount_point_get_mount_path (point);
+
+      mount = g_unix_mount_at (mount_path, NULL);
+      if (mount)
+        entries = g_list_append (entries, mount);
+    }
+
+  return entries;
+}
+
 static void
 get_primary_disc_info (CcInfoPanel *self)
 {
-  GList        *points;
-  GList        *p;
+  GList *points, *entries = NULL;
+  GList *p;
 
   points = g_unix_mount_points_get (NULL);
-  for (p = points; p != NULL; p = p->next)
+
+  entries = convert_points_to_entries (points);
+  g_list_free_full (points, (GDestroyNotify) g_unix_mount_point_free);
+
+  for (p = entries; p != NULL; p = p->next)
     {
       GUnixMountEntry *mount = p->data;
       const char *mount_path;
@@ -604,7 +628,7 @@ get_primary_disc_info (CcInfoPanel *self)
 
       self->priv->primary_mounts = g_list_prepend (self->priv->primary_mounts, mount);
     }
-  g_list_free (points);
+  g_list_free (entries);
 
   get_primary_disc_info_start (self);
 }
