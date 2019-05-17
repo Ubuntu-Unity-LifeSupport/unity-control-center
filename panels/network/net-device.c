@@ -26,12 +26,7 @@
 #include <arpa/inet.h>
 #include <netinet/ether.h>
 
-#include <nm-device-ethernet.h>
-#include <nm-device-modem.h>
-#include <nm-device-wifi.h>
-#include <nm-device-wimax.h>
-#include <nm-device-infiniband.h>
-#include <nm-utils.h>
+#include <NetworkManager.h>
 
 #include "net-device.h"
 
@@ -58,8 +53,6 @@ get_mac_address_of_connection (NMConnection *connection)
         if (!connection)
                 return NULL;
 
-        const GByteArray *mac = NULL;
-
         /* check the connection type */
         if (nm_connection_is_type (connection,
                                    NM_SETTING_WIRELESS_SETTING_NAME)) {
@@ -67,38 +60,14 @@ get_mac_address_of_connection (NMConnection *connection)
                 NMSettingWireless *s_wireless = nm_connection_get_setting_wireless (connection);
                 if (!s_wireless)
                         return NULL;
-                mac = nm_setting_wireless_get_mac_address (s_wireless);
-                if (mac)
-                        return nm_utils_hwaddr_ntoa (mac->data, ARPHRD_ETHER);
+                return g_strdup (nm_setting_wireless_get_mac_address (s_wireless));
         } else if (nm_connection_is_type (connection,
                                           NM_SETTING_WIRED_SETTING_NAME)) {
                 /* check wired settings */
                 NMSettingWired *s_wired = nm_connection_get_setting_wired (connection);
                 if (!s_wired)
                         return NULL;
-                mac = nm_setting_wired_get_mac_address (s_wired);
-                if (mac)
-                        return nm_utils_hwaddr_ntoa (mac->data, ARPHRD_ETHER);
-        } else if (nm_connection_is_type (connection,
-                                          NM_SETTING_WIMAX_SETTING_NAME)) {
-                /* check wimax settings */
-                NMSettingWimax *s_wimax = nm_connection_get_setting_wimax (connection);
-                if (!s_wimax)
-                        return NULL;
-                mac = nm_setting_wimax_get_mac_address (s_wimax);
-                if (mac)
-                        return nm_utils_hwaddr_ntoa (mac->data, ARPHRD_ETHER);
-        } else if (nm_connection_is_type (connection,
-                                          NM_SETTING_INFINIBAND_SETTING_NAME)) {
-                /* check infiniband settings */
-                NMSettingInfiniband *s_infiniband = \
-                        nm_connection_get_setting_infiniband (connection);
-                if (!s_infiniband)
-                        return NULL;
-                mac = nm_setting_infiniband_get_mac_address (s_infiniband);
-                if (mac)
-                        return nm_utils_hwaddr_ntoa (mac->data,
-                                                     ARPHRD_INFINIBAND);
+                return g_strdup (nm_setting_wired_get_mac_address (s_wired));
         }
         /* no MAC address found */
         return NULL;
@@ -120,19 +89,6 @@ get_mac_address_of_device (NMDevice *device)
         {
                 NMDeviceEthernet *device_ethernet = NM_DEVICE_ETHERNET (device);
                 mac = nm_device_ethernet_get_hw_address (device_ethernet);
-                break;
-        }
-        case NM_DEVICE_TYPE_WIMAX:
-        {
-                NMDeviceWimax *device_wimax = NM_DEVICE_WIMAX (device);
-                mac = nm_device_wimax_get_hw_address (device_wimax);
-                break;
-        }
-        case NM_DEVICE_TYPE_INFINIBAND:
-        {
-                NMDeviceInfiniband *device_infiniband = \
-                        NM_DEVICE_INFINIBAND (device);
-                mac = nm_device_infiniband_get_hw_address (device_infiniband);
                 break;
         }
         default:
@@ -165,53 +121,20 @@ compare_mac_device_with_mac_connection (NMDevice *device,
         return FALSE;
 }
 
-static GSList *
-valid_connections_for_device (NMRemoteSettings *remote_settings,
-                              NetDevice *device)
-{
-        GSList *all, *filtered, *iterator, *valid;
-        NMConnection *connection;
-        NMSettingConnection *s_con;
-
-        all = nm_remote_settings_list_connections (remote_settings);
-        filtered = nm_device_filter_connections (device->priv->nm_device, all);
-        g_slist_free (all);
-
-        valid = NULL;
-        for (iterator = filtered; iterator; iterator = iterator->next) {
-                connection = iterator->data;
-                s_con = nm_connection_get_setting_connection (connection);
-                if (!s_con)
-                        continue;
-
-                if (nm_setting_connection_get_master (s_con))
-                        continue;
-
-                valid = g_slist_prepend (valid, connection);
-        }
-        g_slist_free (filtered);
-
-        return g_slist_reverse (valid);
-}
-
-NMConnection *
-net_device_get_find_connection (NetDevice *device)
+static NMConnection *
+net_device_real_get_find_connection (NetDevice *device)
 {
         GSList *list, *iterator;
         NMConnection *connection = NULL;
         NMActiveConnection *ac;
-        NMRemoteSettings *remote_settings;
 
         /* is the device available in a active connection? */
-        remote_settings = net_object_get_remote_settings (NET_OBJECT (device));
         ac = nm_device_get_active_connection (device->priv->nm_device);
-        if (ac) {
-                return (NMConnection*)nm_remote_settings_get_connection_by_path (remote_settings,
-                                        nm_active_connection_get_connection (ac));
-        }
+        if (ac)
+                return (NMConnection*) nm_active_connection_get_connection (ac);
 
         /* not found in active connections - check all available connections */
-        list = valid_connections_for_device (remote_settings, device);
+        list = net_device_get_valid_connections (device);
         if (list != NULL) {
                 /* if list has only one connection, use this connection */
                 if (g_slist_length (list) == 1) {
@@ -236,6 +159,12 @@ out:
         return connection;
 }
 
+NMConnection *
+net_device_get_find_connection (NetDevice *device)
+{
+        return NET_DEVICE_GET_CLASS (device)->get_find_connection (device);
+}
+
 static void
 state_changed_cb (NMDevice *device,
                   NMDeviceState new_state,
@@ -250,6 +179,7 @@ state_changed_cb (NMDevice *device,
 NMDevice *
 net_device_get_nm_device (NetDevice *device)
 {
+        g_return_val_if_fail (NET_IS_DEVICE (device), NULL);
         return device->priv->nm_device;
 }
 
@@ -314,10 +244,13 @@ net_device_set_property (GObject *device_,
                                                      priv->changed_id);
                 }
                 priv->nm_device = g_value_dup_object (value);
-                priv->changed_id = g_signal_connect (priv->nm_device,
-                                                     "state-changed",
-                                                     G_CALLBACK (state_changed_cb),
-                                                     net_device);
+                if (priv->nm_device) {
+                        priv->changed_id = g_signal_connect (priv->nm_device,
+                                                             "state-changed",
+                                                             G_CALLBACK (state_changed_cb),
+                                                             net_device);
+                } else
+                        priv->changed_id = 0;
                 break;
         default:
                 G_OBJECT_WARN_INVALID_PROPERTY_ID (net_device, prop_id, pspec);
@@ -352,6 +285,7 @@ net_device_class_init (NetDeviceClass *klass)
         object_class->get_property = net_device_get_property;
         object_class->set_property = net_device_set_property;
         parent_class->edit = net_device_edit;
+        klass->get_find_connection = net_device_real_get_find_connection;
 
         pspec = g_param_spec_object ("nm-device", NULL, NULL,
                                      NM_TYPE_DEVICE,
@@ -377,3 +311,38 @@ net_device_new (void)
         return NET_DEVICE (device);
 }
 
+GSList *
+net_device_get_valid_connections (NetDevice *device)
+{
+        GSList *valid;
+        NMConnection *connection;
+        NMSettingConnection *s_con;
+        NMActiveConnection *active_connection;
+        const char *active_uuid;
+        const GPtrArray *all;
+        GPtrArray *filtered;
+        guint i;
+
+        all = nm_client_get_connections (net_object_get_client (NET_OBJECT (device)));
+        filtered = nm_device_filter_connections (net_device_get_nm_device (device), all);
+
+        active_connection = nm_device_get_active_connection (net_device_get_nm_device (device));
+        active_uuid = active_connection ? nm_active_connection_get_uuid (active_connection) : NULL;
+
+        valid = NULL;
+        for (i = 0; i < filtered->len; i++) {
+                connection = g_ptr_array_index (filtered, i);
+                s_con = nm_connection_get_setting_connection (connection);
+                if (!s_con)
+                        continue;
+
+                if (nm_setting_connection_get_master (s_con) &&
+                    g_strcmp0 (nm_setting_connection_get_uuid (s_con), active_uuid) != 0)
+                        continue;
+
+                valid = g_slist_prepend (valid, connection);
+        }
+        g_ptr_array_free (filtered, FALSE);
+
+        return g_slist_reverse (valid);
+}

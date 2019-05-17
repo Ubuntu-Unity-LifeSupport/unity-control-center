@@ -113,7 +113,9 @@ PA_REQUIRED_VERSION=2.0
 CANBERRA_REQUIRED_VERSION=0.13
 GDKPIXBUF_REQUIRED_VERSION=2.23.0
 POLKIT_REQUIRED_VERSION=0.103
-NETWORK_MANAGER_REQUIRED_VERSION=0.8.992
+NETWORK_MANAGER_REQUIRED_VERSION=1.2.0
+NETWORK_MANAGER_APPLET_REQUIRED_VERSION=1.2.0
+MODEM_MANAGER_REQUIRED_VERSION=0.7
 LIBNOTIFY_REQUIRED_VERSION=0.7.3
 GNOME_DESKTOP_REQUIRED_VERSION=3.27.3
 SCHEMAS_REQUIRED_VERSION=3.15.4
@@ -149,7 +151,8 @@ PKG_CHECK_MODULES(KEYBOARD_PANEL, $COMMON_MODULES
 PKG_CHECK_MODULES(MEDIA_PANEL, $COMMON_MODULES)
 PKG_CHECK_MODULES(MOUSE_PANEL, $COMMON_MODULES xi >= 1.2
                   unity-settings-daemon x11)
-PKG_CHECK_MODULES(NETWORK_PANEL, $COMMON_MODULES)
+PKG_CHECK_MODULES(NETWORK_PANEL, $COMMON_MODULES gmodule-2.0
+                  polkit-gobject-1 >= $POLKIT_REQUIRED_VERSION)
 PKG_CHECK_MODULES(POWER_PANEL, $COMMON_MODULES upower-glib >= 0.9.1
                   unity-settings-daemon)
 PKG_CHECK_MODULES(COLOR_PANEL, $COMMON_MODULES colord >= 0.1.8)
@@ -182,14 +185,16 @@ AM_PROG_VALAC([0.20.0])
 GDESKTOP_PREFIX=`$PKG_CONFIG --variable prefix gsettings-desktop-schemas`
 AC_SUBST(GDESKTOP_PREFIX)
 
-# Check for NetworkManager ~0.9
-PKG_CHECK_MODULES(NETWORK_MANAGER, NetworkManager >= $NETWORK_MANAGER_REQUIRED_VERSION
-                  libnm-glib >= $NETWORK_MANAGER_REQUIRED_VERSION
-                  libnm-util >= $NETWORK_MANAGER_REQUIRED_VERSION
-                  libnm-gtk >= $NETWORK_MANAGER_REQUIRED_VERSION,
+# Check for NetworkManager ~1.2
+PKG_CHECK_MODULES(NETWORK_MANAGER,
+                  libnm >= $NETWORK_MANAGER_REQUIRED_VERSION
+                  libnma >= $NETWORK_MANAGER_APPLET_REQUIRED_VERSION
+		          mm-glib >= $MODEM_MANAGER_REQUIRED_VERSION,
                   [have_networkmanager=yes], have_networkmanager=no)
 if test "x$have_networkmanager" = xno ; then
-        AC_MSG_WARN(*** Network panel will not be built (NetworkManager ~0.9 or newer not found) ***)
+        AC_MSG_WARN(*** Network panel will not be built (NetworkManager ~1.2 or newer not found) ***)
+else
+	AC_DEFINE(BUILD_NETWORK, 1, [Define to 1 to build the Network panel])
 fi
 AM_CONDITIONAL(BUILD_NETWORK, [test x$have_networkmanager = xyes])
 
@@ -516,6 +521,8 @@ panels/color/icons/scalable/Makefile
 panels/printers/Makefile
 panels/printers/unity-printers-panel.desktop.in
 panels/network/Makefile
+panels/network/wireless-security/Makefile
+panels/network/connection-editor/Makefile
 panels/network/unity-network-panel.desktop.in
 panels/universal-access/Makefile
 panels/universal-access/unity-universal-access-panel.desktop.in

@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+19.04.20190209-0ubuntu4) eoan; urgency=medium
+
+  * Network: Port to libnm 1.2 (lp: #1744619)
+
+ -- Khurshid Alam <khurshid.alam@linuxmail.org>  Fri, 17 May 2019 09:29:31 +0200
+
 unity-control-center (15.04.0+19.04.20190209-0ubuntu3) disco; urgency=medium
 
   [ Khurshid Alam ]
