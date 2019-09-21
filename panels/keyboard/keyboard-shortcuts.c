@@ -28,8 +28,8 @@
 #include "cc-keyboard-option.h"
 #include "wm-common.h"
 
-#define BINDINGS_SCHEMA "org.gnome.settings-daemon.plugins.media-keys"
-#define CUSTOM_KEYS_BASENAME "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+#define BINDINGS_SCHEMA "com.canonical.unity.settings-daemon.plugins.media-keys"
+#define CUSTOM_KEYS_BASENAME "/com/canonical/unity/settings-daemon/plugins/media-keys/custom-keybindings"
 #define CUSTOM_SHORTCUTS_ID "custom"
 #define WID(builder, name) (GTK_WIDGET (gtk_builder_get_object (builder, name)))
 

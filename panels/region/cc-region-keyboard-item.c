@@ -31,7 +31,7 @@
 
 #define CC_REGION_KEYBOARD_ITEM_GET_PRIVATE(o) (G_TYPE_INSTANCE_GET_PRIVATE ((o), CC_TYPE_REGION_KEYBOARD_ITEM, CcRegionKeyboardItemPrivate))
 
-#define CUSTOM_KEYS_SCHEMA "org.gnome.settings-daemon.plugins.media-keys.custom-keybinding"
+#define CUSTOM_KEYS_SCHEMA "com.canonical.unity.settings-daemon.plugins.media-keys.custom-keybinding"
 
 struct CcRegionKeyboardItemPrivate
 {
