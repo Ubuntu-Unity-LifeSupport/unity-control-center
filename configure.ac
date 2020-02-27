@@ -139,7 +139,7 @@ PKG_CHECK_MODULES(LIBSHORTCUTS, $COMMON_MODULES x11)
 PKG_CHECK_MODULES(SHELL, $COMMON_MODULES libgnome-menu-3.0 gio-unix-2.0 x11
                   polkit-gobject-1 >= $POLKIT_REQUIRED_VERSION)
 PKG_CHECK_MODULES(APPEARANCE_PANEL, $COMMON_MODULES libxml-2.0 gnome-desktop-3.0
-                  gdk-pixbuf-2.0 >= $GDKPIXBUF_REQUIRED_VERSION)
+                  gdk-pixbuf-2.0 >= $GDKPIXBUF_REQUIRED_VERSION libunity-settings-daemon)
 PKG_CHECK_MODULES(DATETIME_PANEL, $COMMON_MODULES timezonemap geonames
                   polkit-gobject-1 >= $POLKIT_REQUIRED_VERSION)
 PKG_CHECK_MODULES(DISPLAY_PANEL, $COMMON_MODULES libunity-settings-daemon x11)

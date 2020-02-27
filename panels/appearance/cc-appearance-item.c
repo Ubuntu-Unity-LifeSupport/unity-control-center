@@ -26,7 +26,7 @@
 #include <gio/gio.h>
 #include <glib/gi18n-lib.h>
 
-#include <libgnome-desktop/gnome-bg.h>
+#include <libunity-settings-daemon/gsd-bg.h>
 #include <gdesktop-enums.h>
 
 #include "cc-appearance-item.h"
@@ -51,7 +51,7 @@ struct CcAppearanceItemPrivate
         CcAppearanceItemFlags flags;
 
         /* internal */
-        GnomeBG         *bg;
+        GsdBG         *bg;
         char            *mime_type;
         int              width;
         int              height;
@@ -105,7 +105,7 @@ set_bg_properties (CcAppearanceItem *item)
 		filename = g_file_get_path (file);
 		g_object_unref (file);
 
-		gnome_bg_set_filename (item->priv->bg, filename);
+		gsd_bg_set_filename (item->priv->bg, filename);
 		g_free (filename);
 	}
 
@@ -116,8 +116,8 @@ set_bg_properties (CcAppearanceItem *item)
                 gdk_rgba_parse (&scolor, item->priv->secondary_color);
         }
 
-        gnome_bg_set_rgba (item->priv->bg, item->priv->shading, &pcolor, &scolor);
-        gnome_bg_set_placement (item->priv->bg, item->priv->placement);
+        gsd_bg_set_rgba (item->priv->bg, item->priv->shading, &pcolor, &scolor);
+        gsd_bg_set_placement (item->priv->bg, item->priv->placement);
 }
 
 
@@ -130,7 +130,7 @@ cc_appearance_item_changes_with_time (CcAppearanceItem *item)
 
         changes = FALSE;
         if (item->priv->bg != NULL) {
-                changes = gnome_bg_changes_with_time (item->priv->bg);
+                changes = gsd_bg_changes_with_time (item->priv->bg);
         }
         return changes;
 }
@@ -144,7 +144,7 @@ update_size (CcAppearanceItem *item)
 	if (item->priv->uri == NULL) {
 		item->priv->size = g_strdup ("");
 	} else {
-		if (gnome_bg_has_multiple_sizes (item->priv->bg) || gnome_bg_changes_with_time (item->priv->bg)) {
+		if (gsd_bg_has_multiple_sizes (item->priv->bg) || gsd_bg_changes_with_time (item->priv->bg)) {
 			item->priv->size = g_strdup (_("multiple sizes"));
 		} else {
 			/* translators: 100 × 100px
@@ -157,14 +157,14 @@ update_size (CcAppearanceItem *item)
 }
 
 static GdkPixbuf *
-render_at_size (GnomeBG *bg,
+render_at_size (GsdBG *bg,
                 gint width,
                 gint height)
 {
         GdkPixbuf *pixbuf;
 
         pixbuf = gdk_pixbuf_new (GDK_COLORSPACE_RGB, FALSE, 8, width, height);
-        gnome_bg_draw (bg, pixbuf, gdk_screen_get_default (), FALSE);
+        gsd_bg_draw (bg, pixbuf, gdk_screen_get_default (), FALSE);
 
         return pixbuf;
 }
@@ -189,21 +189,21 @@ cc_appearance_item_get_frame_thumbnail (CcAppearanceItem             *item,
                 /* FIXME: this doesn't play nice with slideshow stepping at all,
                  * because it will always render the current slideshow frame, which
                  * might not be what we want.
-                 * We're lacking an API to draw a high-res GnomeBG manually choosing
+                 * We're lacking an API to draw a high-res GsdBG manually choosing
                  * the slideshow frame though, so we can't do much better than this
                  * for now.
                  */
                 pixbuf = render_at_size (item->priv->bg, width, height);
         } else {
                 if (frame >= 0) {
-                        pixbuf = gnome_bg_create_frame_thumbnail (item->priv->bg,
+                        pixbuf = gsd_bg_create_frame_thumbnail (item->priv->bg,
                                                                   thumbs,
                                                                   gdk_screen_get_default (),
                                                                   width,
                                                                   height,
                                                                   frame);
                 } else {
-                        pixbuf = gnome_bg_create_thumbnail (item->priv->bg,
+                        pixbuf = gsd_bg_create_thumbnail (item->priv->bg,
                                                             thumbs,
                                                             gdk_screen_get_default (),
                                                             width,
@@ -213,7 +213,7 @@ cc_appearance_item_get_frame_thumbnail (CcAppearanceItem             *item,
 
         if (pixbuf != NULL
             && frame != -2
-            && gnome_bg_changes_with_time (item->priv->bg)) {
+            && gsd_bg_changes_with_time (item->priv->bg)) {
                 GEmblem *emblem;
 
                 emblem = get_slideshow_icon ();
@@ -224,7 +224,7 @@ cc_appearance_item_get_frame_thumbnail (CcAppearanceItem             *item,
                 icon = G_ICON (pixbuf);
 	}
 
-        gnome_bg_get_image_size (item->priv->bg,
+        gsd_bg_get_image_size (item->priv->bg,
                                  thumbs,
                                  width,
                                  height,
@@ -734,7 +734,7 @@ cc_appearance_item_init (CcAppearanceItem *item)
 {
         item->priv = CC_APPEARANCE_ITEM_GET_PRIVATE (item);
 
-        item->priv->bg = gnome_bg_new ();
+        item->priv->bg = gsd_bg_new ();
 
         item->priv->shading = G_DESKTOP_BACKGROUND_SHADING_SOLID;
         item->priv->placement = G_DESKTOP_BACKGROUND_STYLE_SCALED;

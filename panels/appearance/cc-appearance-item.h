@@ -20,11 +20,13 @@
 #ifndef __CC_APPEARANCE_ITEM_H
 #define __CC_APPEARANCE_ITEM_H
 
+#define GNOME_DESKTOP_USE_UNSTABLE_API
+
 #include <glib-object.h>
 
 #include <libgnome-desktop/gnome-desktop-thumbnail.h>
+#include <libunity-settings-daemon/gsd-bg.h>
 #include <gdesktop-enums.h>
-#include <libgnome-desktop/gnome-bg.h>
 
 G_BEGIN_DECLS
 
