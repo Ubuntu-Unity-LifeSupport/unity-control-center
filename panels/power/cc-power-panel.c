@@ -1069,7 +1069,7 @@ cc_power_panel_init (CcPowerPanel *self)
   self->priv->up_client = up_client_new ();
   set_ac_battery_ui_mode (self);
 
-  self->priv->gsd_settings = g_settings_new ("org.gnome.settings-daemon.plugins.power");
+  self->priv->gsd_settings = g_settings_new ("com.canonical.unity.settings-daemon.plugins.power");
   g_signal_connect (self->priv->gsd_settings,
                     "changed",
                     G_CALLBACK (on_lock_settings_changed),

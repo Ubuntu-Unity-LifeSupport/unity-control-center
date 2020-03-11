@@ -495,7 +495,7 @@ cc_screen_panel_init (CcScreenPanel *self)
                     "changed",
                     G_CALLBACK (on_lock_settings_changed),
                     self);
-  self->priv->gsd_settings = g_settings_new ("org.gnome.settings-daemon.plugins.power");
+  self->priv->gsd_settings = g_settings_new ("com.canonical.unity.settings-daemon.plugins.power");
   self->priv->session_settings = g_settings_new ("org.gnome.desktop.session");
   self->priv->lockdown_settings = g_settings_new ("org.gnome.desktop.lockdown");
   g_signal_connect (self->priv->lockdown_settings,

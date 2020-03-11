@@ -1,3 +1,12 @@
+unity-control-center (15.04.0+19.10.20190921-0ubuntu3) focal; urgency=medium
+
+  [ Khurshid Alam ]
+  *  Port rest of the schemas gnome-settings-daemon-common to
+     com.canonical.unity.settings-daemon. LP: #1842324
+  * Bump dependency of unity-settings-daemon & unity-settings-daemon-schemas
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 11 Mar 2020 15:59:27 +0100
+
 unity-control-center (15.04.0+19.10.20190921-0ubuntu2) focal; urgency=medium
 
   [ Khurshid Alam ]

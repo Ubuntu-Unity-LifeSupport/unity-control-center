@@ -295,7 +295,7 @@ gnome_mouse_properties_init (GtkBuilder *dialog)
 {
 
 	mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
-	gsd_mouse_settings = g_settings_new ("org.gnome.settings-daemon.peripherals.mouse");
+	gsd_mouse_settings = g_settings_new ("com.canonical.unity.settings-daemon.peripherals.mouse");
 	touchpad_settings = g_settings_new ("org.gnome.desktop.peripherals.touchpad");
 
 	device_manager = gdk_display_get_device_manager (gdk_display_get_default ());

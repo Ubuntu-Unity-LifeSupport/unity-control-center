@@ -31,7 +31,7 @@
 
 #include "gsd-input-helper.h"
 
-#define INPUT_DEVICES_SCHEMA "org.gnome.settings-daemon.peripherals.input-devices"
+#define INPUT_DEVICES_SCHEMA "com.canonical.unity.settings-daemon.plugins.peripherals.input-devices"
 #define KEY_HOTPLUG_COMMAND  "hotplug-command"
 
 typedef gboolean (* InfoIdentifyFunc) (XDeviceInfo *device_info);
