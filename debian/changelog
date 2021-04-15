@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+19.10.20190921-0ubuntu4) hirsute; urgency=medium
+
+  [ Khurshid Alam ]
+  * debian/rules:
+    - Update control center version for hirsuite
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 15 Apr 2021 10:35:47 +0200
+
 unity-control-center (15.04.0+19.10.20190921-0ubuntu3) focal; urgency=medium
 
   [ Khurshid Alam ]
