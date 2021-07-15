@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+21.10.20210715-0ubuntu1) impish; urgency=medium
+
+  [ Khurshid Alam ]
+  * Port removed gsettings-desktop-schemas into usd schemas. LP:
+    #1933646 (LP: #1933646)
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Thu, 15 Jul 2021 08:42:48 +0000
+
 unity-control-center (15.04.0+19.10.20190921-0ubuntu4) hirsute; urgency=medium
 
   [ Khurshid Alam ]

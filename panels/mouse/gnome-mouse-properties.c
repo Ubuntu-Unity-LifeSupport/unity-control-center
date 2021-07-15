@@ -49,6 +49,7 @@
 static GSettings *mouse_settings = NULL;
 static GSettings *gsd_mouse_settings = NULL;
 static GSettings *touchpad_settings = NULL;
+static GSettings *usd_touchpad_settings = NULL;
 static GdkDeviceManager *device_manager = NULL;
 static guint device_added_id = 0;
 static guint device_removed_id = 0;
@@ -67,7 +68,7 @@ setup_scrollmethod_radios (GtkBuilder *dialog)
         GsdTouchpadScrollMethod method;
         gboolean active;
 
-        method = g_settings_get_enum (touchpad_settings, "scroll-method");
+        method = g_settings_get_enum (usd_touchpad_settings, "scroll-method");
 	active = (method == GSD_TOUCHPAD_SCROLL_METHOD_TWO_FINGER_SCROLLING);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (WID ("two_finger_scroll_toggle")), active);
 }
@@ -85,7 +86,7 @@ scrollmethod_changed_event (GtkToggleButton *button, GtkBuilder *dialog)
 	else
 		method = GSD_TOUCHPAD_SCROLL_METHOD_EDGE_SCROLLING;
 
-	g_settings_set_enum (touchpad_settings, "scroll-method", method);
+	g_settings_set_enum (usd_touchpad_settings, "scroll-method", method);
 }
 
 static void
@@ -297,6 +298,7 @@ gnome_mouse_properties_init (GtkBuilder *dialog)
 	mouse_settings = g_settings_new ("org.gnome.desktop.peripherals.mouse");
 	gsd_mouse_settings = g_settings_new ("com.canonical.unity.settings-daemon.peripherals.mouse");
 	touchpad_settings = g_settings_new ("org.gnome.desktop.peripherals.touchpad");
+	usd_touchpad_settings = g_settings_new ("com.canonical.unity.settings-daemon.peripherals.touchpad");
 
 	device_manager = gdk_display_get_device_manager (gdk_display_get_default ());
 	device_added_id = g_signal_connect (device_manager, "device-added",
@@ -324,6 +326,10 @@ gnome_mouse_properties_dispose (GtkWidget *widget)
 	if (touchpad_settings != NULL) {
 		g_object_unref (touchpad_settings);
 		touchpad_settings = NULL;
+	}
+	if (usd_touchpad_settings != NULL) {
+		g_object_unref (usd_touchpad_settings);
+		usd_touchpad_settings = NULL;
 	}
 	if (device_manager != NULL) {
 		g_signal_handler_disconnect (device_manager, device_added_id);
