@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+21.10.20220207-0ubuntu2) jammy; urgency=medium
+
+  [ Khurshid Alam ]
+  * debian/rules:
+    - Update control center version for the new serie
+
+ -- Sebastien Bacher <seb128@ubuntu.com>  Wed, 02 Mar 2022 12:27:31 +0100
+
 unity-control-center (15.04.0+21.10.20220207-0ubuntu1) jammy; urgency=medium
 
   * No-change rebuild against latest libwacom
