@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+21.10.20220802-0ubuntu1) kinetic; urgency=medium
+
+  * Adapt to gnome-desktop 43 thumbnail API changes
+
+ -- Jeremy Bicha <jbicha@ubuntu.com>  Tue, 02 Aug 2022 14:02:42 -0400
+
 unity-control-center (15.04.0+21.10.20220207-0ubuntu3) jammy; urgency=medium
 
   * Build-Depend on fonts-ubuntu instead of old package name
