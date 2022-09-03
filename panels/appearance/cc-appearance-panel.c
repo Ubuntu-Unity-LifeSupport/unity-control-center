@@ -1325,7 +1325,7 @@ update_chooser_preview (GtkFileChooser    *chooser,
 								     mime_type);
 		g_free (mime_type);
 #endif
-}
+	}
 
       gtk_dialog_set_response_sensitive (GTK_DIALOG (chooser),
 					 GTK_RESPONSE_ACCEPT,
@@ -1537,8 +1537,8 @@ cc_appearance_panel_drag_uris (GtkWidget *widget,
   g_strfreev(uris);
 }
 
-static gchar *themes_id[] = { "Adwaita", "Ambiance", "Radiance", "HighContrast" };
-static gchar *themes_name[] = { "Adwaita", "Ambiance", "Radiance", "High Contrast" };
+static gchar *themes_id[] = { "Yaru", "Yaru-dark" };
+static gchar *themes_name[] = { "Yaru", "Yaru-dark" };
 
 static gboolean
 get_theme_data (const gchar *theme_name,
@@ -1593,9 +1593,14 @@ theme_selection_changed (GtkComboBox *combo, CcAppearancePanel *self)
   g_settings_delay (self->priv->interface_settings);
 
   g_settings_set_string (self->priv->interface_settings, "gtk-theme", gtk_theme);
-  g_settings_set_string (self->priv->interface_settings, "icon-theme", icon_theme);
   g_settings_set_string (self->priv->interface_settings, "cursor-theme", cursor_theme);
   g_settings_set_string (self->priv->wm_theme_settings, "theme", window_theme);
+
+  if (strstr(gtk_theme, "-dark") != NULL) {
+    g_settings_set_string (self->priv->interface_settings, "color-scheme", "prefer-dark");
+  } else {
+    g_settings_set_string (self->priv->interface_settings, "color-scheme", "prefer-light");
+  }
 
   g_settings_apply (self->priv->interface_settings);
 
@@ -1667,6 +1672,111 @@ setup_theme_selector (CcAppearancePanel *self)
 
     g_signal_connect (G_OBJECT (widget), "changed",
 		      G_CALLBACK (theme_selection_changed), self);
+}
+
+static gchar *colors_id[] = { "Yaru", "Yaru-dark", "Yaru-bark", "Yaru-bark-dark", "Yaru-blue", "Yaru-blue-dark", "Yaru-magenta", "Yaru-magenta-dark", "Yaru-olive", "Yaru-olive-dark", "Yaru-prussiangreen", "Yaru-prussiangreen-dark", "Yaru-purple", "Yaru-purple-dark", "Yaru-red", "Yaru-red-dark", "Yaru-sage", "Yaru-sage-dark", "Yaru-viridian", "Yaru-viridian-dark" };
+static gchar *colors_name[] = { "Default (Yaru)", "Default (Yaru-dark)", "Bark (Yaru)", "Bark (Yaru-dark)", "Blue (Yaru)", "Blue (Yaru-dark)",  "Magenta (Yaru)", "Magenta (Yaru-dark)", "Olive (Yaru)", "Olive (Yaru-dark)", "Prussian Green (Yaru)", "Prussian Green (Yaru-dark)", "Purple (Yaru)", "Purple (Yaru-dark)", "Red (Yaru)", "Red (Yaru-dark)", "Sage (Yaru)", "Sage (Yaru-dark)", "Viridian (Yaru)", "Viridian (Yaru-dark)" };
+
+static gboolean
+check_icon_exists (const gchar *icon_name)
+{
+  gchar *path;
+  GKeyFile *icon_file;
+  GError *error = NULL;
+  gboolean result = FALSE;
+
+  icon_file = g_key_file_new ();
+  path = g_build_filename ("/usr/share/icons", icon_name, "index.theme", NULL);
+  if (g_key_file_load_from_file (icon_file, path, G_KEY_FILE_NONE, &error))
+    {
+      result = TRUE;
+    }
+  else
+    {
+      g_warning ("Could not load %s: %s", path, error->message);
+      g_error_free (error);
+    }
+
+  g_key_file_free (icon_file);
+  g_free (path);
+
+  return result;
+}
+
+static void
+color_selection_changed (GtkComboBox *combo, CcAppearancePanel *self)
+{
+  gint active;
+
+  active = gtk_combo_box_get_active (combo);
+  g_return_if_fail (active >= 0 && active < G_N_ELEMENTS (colors_id));
+
+  if (!check_icon_exists (gtk_combo_box_get_active_id (combo)))
+    return;
+
+  g_settings_delay (self->priv->interface_settings);
+
+  g_settings_set_string (self->priv->interface_settings, "icon-theme", gtk_combo_box_get_active_id (combo));
+
+  g_settings_apply (self->priv->interface_settings);
+}
+
+static void
+setup_color_selector (CcAppearancePanel *self)
+{
+  gchar *current_icon_theme;
+  gchar *default_icon_theme;
+  gint i, current_icon_index = 0;
+  GtkWidget *widget;
+  GtkWidget *liststore;
+  GSettingsSchemaSource *source;
+  CcAppearancePanelPrivate *priv = self->priv;
+  GSettings *defaults_settings = g_settings_new ("org.gnome.desktop.interface");
+
+  priv->interface_settings = g_settings_new ("org.gnome.desktop.interface");
+
+  source = g_settings_schema_source_get_default ();
+
+  priv->wm_theme_settings = g_settings_new ("org.gnome.desktop.wm.preferences");
+  current_icon_theme = g_settings_get_string (priv->interface_settings, "icon-theme");
+
+  /* getting the default for the theme */
+  g_settings_delay (defaults_settings);
+  g_settings_reset (defaults_settings, "icon-theme");
+  default_icon_theme = g_settings_get_string (defaults_settings, "icon-theme");
+  g_object_unref (defaults_settings);
+
+  widget = WID ("color-selector");
+  liststore = WID ("color-list-store");
+
+  for (i = 0; i < G_N_ELEMENTS (colors_id); i++, current_icon_index++)
+    {
+      GtkTreeIter iter;
+
+      gchar* new_icon_name;
+
+      if (!check_icon_exists (colors_id[i]))
+        {
+          current_icon_index--;
+          continue;
+        }
+
+      new_icon_name = g_strdup (colors_name[i]);
+
+      gtk_list_store_append (GTK_LIST_STORE (liststore), &iter);
+      gtk_list_store_set (GTK_LIST_STORE (liststore), &iter, 0, colors_id[i], 1, new_icon_name, -1);
+
+      if (g_strcmp0 (colors_id[i], current_icon_theme) == 0)
+	  /* This is the current icon theme, so select item in the combo box */
+         gtk_combo_box_set_active (GTK_COMBO_BOX (widget), current_icon_index);
+
+      g_free (new_icon_name);
+    }
+    g_free (current_icon_theme);
+    g_free (default_icon_theme);
+
+    g_signal_connect (G_OBJECT (widget), "changed",
+		      G_CALLBACK (color_selection_changed), self);
 }
 
 static void
@@ -2391,7 +2501,7 @@ cc_appearance_panel_init (CcAppearancePanel *self)
 {
   CcAppearancePanelPrivate *priv;
   gchar *objects_unity[] = { "style-liststore",
-      "sources-liststore", "theme-list-store", "main-notebook", "sizegroup", NULL };
+      "sources-liststore", "theme-list-store", "color-list-store", "main-notebook", "sizegroup", NULL };
   GError *err = NULL;
   GtkWidget *widget;
   GtkListStore *store;
@@ -2529,6 +2639,9 @@ cc_appearance_panel_init (CcAppearancePanel *self)
 
   /* Setup theme selector */
   setup_theme_selector (self);
+
+  /* Setup color selector */
+  setup_color_selector (self);
 
   /* Setup unity settings */
   setup_unity_settings (self);

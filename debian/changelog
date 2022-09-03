@@ -1,3 +1,14 @@
+unity-control-center (15.04.0+22.10.20220903.2-0ubuntu1) kinetic; urgency=medium
+
+  [ Rudra Saraswat ]
+  * Change 'color-scheme' when switching between dark and light theme
+
+  * Complete overhaul: add accent colors, Yaru and Yaru-dark; improve
+    appearance of appearance panel; update info panel to show Unity version
+    instead of Ubuntu version
+
+ -- Dmitry Shachnev <mitya57@ubuntu.com>  Sat, 03 Sep 2022 17:45:52 +0000
+
 unity-control-center (15.04.0+21.10.20220802-0ubuntu1) kinetic; urgency=medium
 
   * Adapt to gnome-desktop 43 thumbnail API changes

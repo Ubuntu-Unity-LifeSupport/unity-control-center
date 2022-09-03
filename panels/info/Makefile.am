@@ -50,7 +50,7 @@ legaldir = $(pkgdatadir)
 dist_legal_DATA = searchingthedashlegalnotice.html
 
 uidir = $(pkgdatadir)/ui
-dist_ui_DATA = info.ui GnomeLogoVerticalMedium.svg UbuntuLogo.png
+dist_ui_DATA = info.ui GnomeLogoVerticalMedium.svg UnityLogo.png
 
 @INTLTOOL_DESKTOP_RULE@
 
