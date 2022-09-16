@@ -1,3 +1,11 @@
+unity-control-center (15.04.0+22.10.20220916.1-0ubuntu1) kinetic; urgency=medium
+
+  [ Rudra Saraswat ]
+  * Switch UnityLogo.png text color to a readable shade of grey for both
+    dark and light themes
+
+ -- Dmitry Shachnev <mitya57@ubuntu.com>  Fri, 16 Sep 2022 10:57:29 +0000
+
 unity-control-center (15.04.0+22.10.20220903.2-0ubuntu1) kinetic; urgency=medium
 
   [ Rudra Saraswat ]
