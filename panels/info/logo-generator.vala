@@ -28,7 +28,7 @@ public class Main : Object
 	context.set_source_surface (logo, 0, 0);
 	context.paint();
 
-	context.set_source_rgba (0.5, 0.5, 0.5, 1);
+	context.set_source_rgba (0, 0, 0, 0.5);
 	context.translate (0, 117);
 	var font_description = new Pango.FontDescription();
 	font_description.set_family("Ubuntu");

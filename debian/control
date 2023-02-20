@@ -55,7 +55,6 @@ Build-Depends: autotools-dev,
                locales,
                network-manager-dev (>= 0.9.6.4) [linux-any],
                shared-mime-info,
-               libwebkit2gtk-4.1-dev,
                libgl1-mesa-dev,
                valac (>= 0.20.0),
                indicator-datetime

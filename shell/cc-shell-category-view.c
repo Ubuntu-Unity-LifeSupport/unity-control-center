@@ -147,6 +147,9 @@ cc_shell_category_view_constructed (GObject *object)
       PangoAttrList *attrs;
 
       label = gtk_label_new (priv->name);
+      gtk_widget_set_margin_top(label, 10);
+      gtk_widget_set_margin_bottom(label, 20);
+      gtk_widget_set_margin_left(label, 10);
       attrs = pango_attr_list_new ();
       pango_attr_list_insert (attrs, pango_attr_weight_new (PANGO_WEIGHT_BOLD));
       gtk_label_set_attributes (GTK_LABEL (label), attrs);

@@ -165,6 +165,7 @@ cc_shell_item_view_update_cells (CcShellItemView *view)
 			/* We only have one text cell */
 			break;
 		}
+		gtk_cell_renderer_set_padding(cell, 10, 10);
 	}
 }
 
@@ -209,6 +210,9 @@ cc_shell_item_view_init (CcShellItemView *self)
                     G_CALLBACK (iconview_button_press_event_cb), self);
   g_signal_connect (self, "button-release-event",
                     G_CALLBACK (iconview_button_release_event_cb), self);
+
+  GdkRGBA rgba = {0, 0, 0, 0};
+  gtk_widget_override_background_color (self, GTK_STATE_FLAG_NORMAL, &rgba);
 }
 
 GtkWidget *

@@ -1,3 +1,10 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu1) lunar; urgency=medium
+
+  [ Rudra Saraswat ]
+  * Make Unity 7.7 changes
+
+ -- Dmitry Shachnev <mitya57@ubuntu.com>  Mon, 20 Feb 2023 18:18:02 +0000
+
 unity-control-center (15.04.0+22.10.20220916.1-0ubuntu1) kinetic; urgency=medium
 
   [ Rudra Saraswat ]
