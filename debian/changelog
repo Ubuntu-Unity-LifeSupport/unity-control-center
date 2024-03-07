@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu2) noble; urgency=medium
+
+  * Disable GNOME Online Accounts integration (LP: #2055461)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Thu, 07 Mar 2024 16:02:31 -0500
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu1) lunar; urgency=medium
 
   [ Rudra Saraswat ]
