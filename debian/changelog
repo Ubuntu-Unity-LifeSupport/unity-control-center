@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu4) noble; urgency=medium
+
+  * No-change rebuild against libcups2t64
+
+ -- Michael Hudson-Doyle <michael.hudson@ubuntu.com>  Wed, 20 Mar 2024 13:57:50 +1300
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu3) noble; urgency=medium
 
   * No-change rebuild against libglib2.0-0t64
