@@ -54,4 +54,6 @@ GType cc_user_panel_get_type (void) G_GNUC_CONST;
 
 G_END_DECLS
 
+void cc_user_panel_register (GIOModule *module);
+
 #endif /* _UM_USER_PANEL_H */

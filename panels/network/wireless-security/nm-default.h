@@ -41,6 +41,7 @@
 #include <libnm/nm-connection.h>
 #include <libnm/nm-setting-wireless-security.h>
 #include <libnm/nm-setting-8021x.h>
+#include <libnm/NetworkManager.h>
 
 static inline gboolean
 nm_clear_g_source (guint *id)
