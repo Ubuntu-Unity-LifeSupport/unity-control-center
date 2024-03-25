@@ -1,3 +1,10 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu7) noble; urgency=medium
+
+  * Revert "Build with qa=-bug-implicit-func for now"
+  * Fix implicit function declaration
+
+ -- Shengjing Zhu <shengjing.zhu@canonical.com>  Mon, 25 Mar 2024 18:39:50 +0800
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu6) noble; urgency=medium
 
   * Build with qa=-bug-implicit-func for now.
