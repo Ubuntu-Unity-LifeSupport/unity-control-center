@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu8) noble; urgency=medium
+
+  * No-change rebuild for CVE-2024-3094
+
+ -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 31 Mar 2024 08:30:24 +0000
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu7) noble; urgency=medium
 
   * Revert "Build with qa=-bug-implicit-func for now"
