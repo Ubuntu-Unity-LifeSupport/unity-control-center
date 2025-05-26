@@ -1,3 +1,15 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu10) questing; urgency=medium
+
+  * No-change rebuild for libxml2 soname change.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 26 May 2025 14:23:56 +0200
+
+unity-control-center (15.04.0+23.04.20230220-0ubuntu9) questing; urgency=medium
+
+  * No-change rebuild for libxml2 soname change.
+
+ -- Matthias Klose <doko@ubuntu.com>  Fri, 23 May 2025 06:06:31 +0200
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu8) noble; urgency=medium
 
   * No-change rebuild for CVE-2024-3094
