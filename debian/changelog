@@ -1,3 +1,9 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu11) questing; urgency=medium
+
+  * Build with -Wincompatible-pointer-types, looks like some gtk changes.
+
+ -- Matthias Klose <doko@ubuntu.com>  Tue, 27 May 2025 19:14:09 +0200
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu10) questing; urgency=medium
 
   * No-change rebuild for libxml2 soname change.
