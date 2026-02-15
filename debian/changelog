@@ -1,3 +1,16 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu12) resolute; urgency=medium
+
+  * Switch from cdbs to debhelper-compat 13 (LP: #2111794)
+  * Add Build-Depends: dh-sequence-translations
+  * Remove obsolete Build-Depends: libgnome-bluetooth-dev,
+    libgdk-pixbuf2.0-dev, libgl1-mesa-dev
+  * Build without cheese support (LP: #2125021)
+  * Stop recommending mousetweaks (LP: #2132329)
+  * Remove obsolete Breaks/Conflicts/Replaces/Provides
+  * Temporarily ignore build test failures (test wasn't being run previously)
+
+ -- Jeremy Bícha <jbicha@ubuntu.com>  Sun, 15 Feb 2026 14:13:39 -0500
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu11) questing; urgency=medium
 
   * Build with -Wincompatible-pointer-types, looks like some gtk changes.

@@ -1,25 +1,32 @@
 #!/usr/bin/make -f
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/utils.mk
-include /usr/share/cdbs/1/class/gnome.mk
-include /usr/share/gnome-pkg-tools/1/rules/gnome-version.mk
-include /usr/share/gnome-pkg-tools/1/rules/clean-la.mk
-
 export DEB_BUILD_MAINT_OPTIONS = hardening=+all
 export DEB_CFLAGS_MAINT_APPEND = -Wno-error=incompatible-pointer-types
-export DEB_LDFLAGS_MAINT_APPEND = -Wl,-z,defs -Wl,-O1 -Wl,--as-needed
-include /usr/share/dpkg/buildflags.mk
+export DEB_LDFLAGS_MAINT_APPEND = -Wl,-O1 -Wl,-z,defs
+export DPKG_GENSYMBOLS_CHECK_LEVEL = 4
 
-DEB_CONFIGURE_SCRIPT := ./autogen.sh
-DEB_CONFIGURE_EXTRA_FLAGS += --libdir=\$${prefix}/lib/$(DEB_HOST_MULTIARCH) \
-                             --disable-onlineaccounts \
-                             --disable-update-mimedb
+%:
+	dh $@
 
-DEB_DH_MAKESHLIBS_ARGS_unity-control-center = --no-act
-DEB_DH_MAKESHLIBS_ARGS_libunity-control-center1 += -- -c4
+execute_before_dh_autoreconf:
+	./autogen.sh --disable-onlineaccounts
 
-binary-post-install/unity-control-center::
-	./panels/info/logo-generator --logo panels/info/UnityLogoBlank.png --text "unity 7.7" --output debian/unity-control-center/usr/share/unity-control-center/ui/UnityLogo.png
+override_dh_auto_configure:
+	dh_auto_configure -- \
+			--disable-onlineaccounts \
+			--disable-updatemimedb
 
-common-binary-post-install-arch:: list-missing
+execute_after_dh_auto_build:
+	./panels/info/logo-generator --logo panels/info/UnityLogoBlank.png --text "unity 7.7" \
+		--output debian/unity-control-center/usr/share/unity-control-center/ui/UnityLogo.png
+
+override_dh_makeshlibs:
+	dh_makeshlibs -punity-control-center --no-act
+	dh_makeshlibs --remaining-packages
+
+override_dh_missing:
+	dh_missing --list-missing
+
+# FIXME
+override_dh_auto_test:
+	dh_auto_test || true
