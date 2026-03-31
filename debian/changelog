@@ -1,4 +1,4 @@
-unity-control-center (15.04.0+23.04.20230220-1ubuntu12) resolute; urgency=medium
+unity-control-center (15.04.0+23.04.20230220-0ubuntu13) resolute; urgency=medium
 
   * Make Unity 7.7.1 changes and change deployment folder for system information logo (LP: #2146719)
 
