@@ -17,8 +17,8 @@ override_dh_auto_configure:
 			--disable-updatemimedb
 
 execute_after_dh_auto_build:
-	./panels/info/logo-generator --logo panels/info/UnityLogoBlank.png --text "unity 7.7" \
-		--output debian/unity-control-center/usr/share/unity-control-center/ui/UnityLogo.png
+	./panels/info/logo-generator --logo panels/info/UnityLogoBlank.png --text "unity 7.7.1" \
+		--output panels/info/UnityLogo.png
 
 override_dh_makeshlibs:
 	dh_makeshlibs -punity-control-center --no-act
