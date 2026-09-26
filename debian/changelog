@@ -2,6 +2,8 @@ unity-control-center (15.04.0+23.04.20230220-0ubuntu13+unity1) resolute; urgency
 
   * debian/source_unity-control-center.py: raw string for the regex
     (invalid escape SyntaxWarning under Python 3.12+).
+  * Build-depend on libcrypt-dev, as 26.10's 0ubuntu16 does: without it
+    the package no longer rebuilds in resolute.
 
  -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 16:48:49 +0000
 
