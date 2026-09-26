@@ -1,3 +1,10 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu13+unity2) resolute; urgency=medium
+
+  * network panel: sort a device whose title is not set yet as an empty
+    string (two GLib CRITICALs at every opening).
+
+ -- Ubuntu Unity Life Support <mihail.rozshko@gmail.com>  Sat, 26 Sep 2026 18:44:34 +0000
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu13+unity1) resolute; urgency=medium
 
   * debian/source_unity-control-center.py: raw string for the regex
