@@ -497,6 +497,7 @@ panel_net_object_sort_func (GtkTreeModel *model, GtkTreeIter *a,
         g_autoptr(NetObject) obj_a = NULL;
         g_autoptr(NetObject) obj_b = NULL;
         gint cat_a, cat_b;
+        const gchar *title_a, *title_b;
 
         gtk_tree_model_get (model, a,
                             PANEL_DEVICES_COLUMN_OBJECT, &obj_a,
@@ -511,7 +512,10 @@ panel_net_object_sort_func (GtkTreeModel *model, GtkTreeIter *a,
         if (cat_a != cat_b)
                 return cat_a - cat_b;
 
-        return g_utf8_collate (net_object_get_title (obj_a), net_object_get_title (obj_b));
+        /* A device row can be sorted before its object has a title */
+        title_a = net_object_get_title (obj_a);
+        title_b = net_object_get_title (obj_b);
+        return g_utf8_collate (title_a ? title_a : "", title_b ? title_b : "");
 }
 
 static void
