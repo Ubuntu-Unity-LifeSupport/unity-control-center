@@ -1,3 +1,13 @@
+unity-control-center (15.04.0+23.04.20230220-0ubuntu13+unity3) resolute; urgency=medium
+
+  * sound panel: survive PipeWire port changes on a Bluetooth profile
+    switch. PipeWire 1.6 keeps the sink index and changes only its port,
+    or sends the ports in a later update; the panel aborted in
+    gvc_mixer_stream_get_port(). Backport of the libgnome-volume-control
+    fixes for this.
+
+ -- Aleksandr Gusarov <alexandergusarov@gmail.com>  Sat, 07 Nov 2026 16:31:28 +0100
+
 unity-control-center (15.04.0+23.04.20230220-0ubuntu13+unity2) resolute; urgency=medium
 
   * network panel: sort a device whose title is not set yet as an empty
